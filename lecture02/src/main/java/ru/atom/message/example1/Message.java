@@ -5,4 +5,8 @@ package ru.atom.message.example1;
  */
 public class Message {
     private String content;
+    public static void main(String[] args) {
+        Object object = null;
+        System.out.println(null == null);
+    }
 }

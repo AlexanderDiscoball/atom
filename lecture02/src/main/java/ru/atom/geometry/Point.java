@@ -3,7 +3,7 @@ package ru.atom.geometry;
 /**
  * Template class for
  */
-public class Point /* super class and interfaces here if necessary */ {
+public class Point extends Geometry implements Collider {
     // fields
     // and methods
 
@@ -18,8 +18,21 @@ public class Point /* super class and interfaces here if necessary */ {
 
         // cast from Object to Point
         Point point = (Point) o;
-
-        // your code here
-        throw new UnsupportedOperationException();
+         return (this.x == point.x && this.y == point.y);
+    }
+    @Override
+    public boolean isColliding(Collider other) {
+        if (this == other) return true;
+        if (other == null) throw new NullPointerException("Коллайдер не должен быть пустой");
+        if (getClass() != other.getClass()) return false;
+        Geometry geometry = (Geometry) other;
+        if (this.x > -1 && this.y > -1 && geometry.x > -1 && geometry.y > -1) {
+            Point point1 = (Point) geometry;
+            return this.equals(point1);
+        }
+        else if (this.x > -1 && this.y > -1 && geometry.x == -1 && geometry.y == -1) {
+            return !(this.x > geometry.secondCornerX || this.y > geometry.secondCornerY);
+        }
+        return false;
     }
 }

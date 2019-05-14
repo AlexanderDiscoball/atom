@@ -1,5 +1,8 @@
 package ru.atom.message.example2;
 
+import ru.atom.geometry.Collider;
+import ru.atom.geometry.Geometry;
+
 import java.io.File;
 
 /**
@@ -18,5 +21,4 @@ public class Message implements Storable {
         System.out.println("Save to in action");
     }
 
-    // ...
 }
