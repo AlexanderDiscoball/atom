@@ -22,7 +22,7 @@ public class ChatController {
     private Map<String, String> usersOnline = new ConcurrentHashMap<>();
 
     /**
-     * curl -X POST -i localhost:8080/chat/login -d "name=I_AM_STUPID"
+     * curl -X POST -i localhost:8080/chat/login -d "name=I_AM"
      */
     @RequestMapping(
             path = "login",
@@ -57,18 +57,46 @@ public class ChatController {
     }
 
     /**
-     * curl -X POST -i localhost:8080/chat/logout -d "name=I_AM_STUPID"
+     * curl -X POST -i localhost:8080/chat/logout -d "name=I_AM"
      */
-    //TODO
+    @RequestMapping(
+            path = "logout",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> logout(@RequestParam("name") String name) {
+        usersOnline.remove(name, name);
+        messages.add("[" + name + "] logged out");
+        return ResponseEntity.ok().build();
+    }
 
     /**
-     * curl -X POST -i localhost:8080/chat/say -d "name=I_AM_STUPID&msg=Hello everyone in this chat"
+     * curl -X POST -i localhost:8080/chat/say -d "name=I_AM&msg=Hello everyone in this chat"
      */
-    //TODO
+    @RequestMapping(
+            path = "say",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> say(@RequestParam("name") String name,@RequestParam("msg") String msg) {
+        messages.add(name + ": " + msg);
+        return ResponseEntity.ok().build();
+    }
 
 
     /**
      * curl -i localhost:8080/chat/chat
      */
-    //TODO
+    @RequestMapping(
+            path = "chat",
+            method = RequestMethod.GET,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity chat() {
+        String mes = "";
+        for(String str : messages){
+            mes += str + "\n";
+        }
+        String responseBody = String.join("\n", mes );
+        return ResponseEntity.ok(responseBody);
+    }
 }
